@@ -1,0 +1,8 @@
+{
+  "default": {
+    "degaart-freetds": {
+      "baseline": "1.14.10",
+      "port-version": 0
+    }
+  }
+}

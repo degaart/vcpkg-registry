@@ -1,0 +1,5 @@
+degaart-freetds provides CMake targets:
+
+find_package(degaart_freetds CONFIG REQUIRED)
+target_link_libraries(main PRIVATE degaart_freetds::ct)
+

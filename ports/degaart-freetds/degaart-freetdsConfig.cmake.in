@@ -1,0 +1,29 @@
+# Do nothing if target already exists
+if(TARGET degaart_freetds::ct)
+    return()
+endif()
+
+set(FREETDS_WITH_DEBUG @FREETDS_WITH_DEBUG@)
+
+# Compute the installation prefix relative to this file.
+get_filename_component(_IMPORT_PREFIX "${CMAKE_CURRENT_LIST_FILE}" PATH)
+get_filename_component(_IMPORT_PREFIX "${_IMPORT_PREFIX}" PATH)
+get_filename_component(_IMPORT_PREFIX "${_IMPORT_PREFIX}" PATH)
+
+# Import library
+add_library(degaart_freetds::ct UNKNOWN IMPORTED)
+find_library(FREETDS_LIB_RELEASE NAMES ct PATHS "${_IMPORT_PREFIX}/lib/" REQUIRED NO_DEFAULT_PATH)
+set_target_properties(degaart_freetds::ct PROPERTIES
+  INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/include"
+  IMPORTED_LINK_INTERFACE_LANGUAGES "C"
+  IMPORTED_LOCATION_RELEASE "${FREETDS_LIB_RELEASE}"
+  IMPORTED_CONFIGURATIONS "RELEASE"
+)
+
+if(FREETDS_WITH_DEBUG)
+    set_property(TARGET degaart_freetds::ct APPEND PROPERTY IMPORTED_CONFIGURATIONS DEBUG)
+    find_library(FREETDS_LIB_DEBUG NAMES ct PATHS "${_IMPORT_PREFIX}/debug/lib/" REQUIRED NO_DEFAULT_PATH)
+    set_target_properties(degaart_freetds::ct PROPERTIES
+        IMPORTED_LOCATION_DEBUG "${FREETDS_LIB_DEBUG}"
+    )
+endif()
