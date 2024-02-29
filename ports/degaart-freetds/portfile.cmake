@@ -22,6 +22,7 @@ vcpkg_configure_make(
         --enable-sybase-compat
         --disable-mars
         --disable-odbc-wide
+        --without-openssl
 )
 
 vcpkg_build_make()
