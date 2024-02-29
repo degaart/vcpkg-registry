@@ -3,6 +3,9 @@ if(TARGET degaart_freetds::ct)
     return()
 endif()
 
+# This shit requires iconv
+find_package(Iconv REQUIRED)
+
 set(FREETDS_WITH_DEBUG @FREETDS_WITH_DEBUG@)
 
 # Compute the installation prefix relative to this file.
@@ -14,7 +17,8 @@ get_filename_component(_IMPORT_PREFIX "${_IMPORT_PREFIX}" PATH)
 add_library(degaart_freetds::ct UNKNOWN IMPORTED)
 find_library(FREETDS_LIB_RELEASE NAMES ct PATHS "${_IMPORT_PREFIX}/lib/" REQUIRED NO_DEFAULT_PATH)
 set_target_properties(degaart_freetds::ct PROPERTIES
-  INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/include"
+  INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/include ${Iconv_INCLUDE_DIRS}"
+  INTERFACE_LINK_LIBRARIES "${Iconv_LIBRARIES}"
   IMPORTED_LINK_INTERFACE_LANGUAGES "C"
   IMPORTED_LOCATION_RELEASE "${FREETDS_LIB_RELEASE}"
   IMPORTED_CONFIGURATIONS "RELEASE"
